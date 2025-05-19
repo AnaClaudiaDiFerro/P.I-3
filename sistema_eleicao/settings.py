@@ -64,20 +64,31 @@ WSGI_APPLICATION = 'sistema_eleicao.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# Database configuration using environment variables
+# You can set these environment variables in your .env file or your server configuration
+# For example:
+# export MYSQL_DATABASE='sistema_eleicao'
+# export MYSQL_USER='root'
+# export MYSQL_PASSWORD='nova_senha'
+# export MYSQL_HOST='localhost'
+# export MYSQL_PORT='3306'
+# If you are using a .env file, you can use python-dotenv to load them
+# from dotenv import load_dotenv
+# load_dotenv()
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',     
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'sistema_eleicao',
-        'USER': 'root',
-        'PASSWORD': 'nova_senha',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'NAME': os.getenv('MYSQL_DATABASE', 'sistema_eleicao'),
+        'USER': os.getenv('MYSQL_USER', 'root'),
+        'PASSWORD': os.getenv('MYSQL_PASSWORD', 'nova_senha'),
+        'HOST': os.getenv('MYSQL_HOST', 'localhost'),
+        'PORT': os.getenv('MYSQL_PORT', '3306'),
     }
 }
-
-
-
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
