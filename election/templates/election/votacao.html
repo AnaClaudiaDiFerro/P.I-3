@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Sistema de Votação - {{ eleicao.titulo }}{% endblock %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/votacao.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container main-content">
+    <div class="card">
+        <div class="card-header">
+            Votação para {{ eleicao.titulo }}
+        </div>
+        <div class="card-body">
+            <div class="instructions">
+                <h3>Como votar:</h3>
+                <p>Siga as instruções abaixo para registrar seu voto:</p>
+                <ul>
+                    <li>Você está logado como: <strong>{{ user.username }}</strong></li>
+                    <li>Analise as propostas de cada chapa</li>
+                    <li>Clique no botão "Votar" da chapa escolhida</li>
+                    <li>Confirme seu voto na tela seguinte</li>
+                    <li>Você só pode votar uma única vez</li>
+                    <li>Seu voto é sigiloso e não poderá ser alterado após a confirmação</li>
+                </ul>
+            </div>
+
+            <div class="timer">
+                <h3>Tempo restante para votação:</h3>
+                <div class="timer-count" data-data-fim="{{ eleicao.data_fim|date:'c' }}">
+                    {% if tempo_restante %}
+                        {{ tempo_restante.days }}d {{ horas|stringformat:"02d" }}:{{ minutos|stringformat:"02d" }}:{{ segundos|stringformat:"02d" }}
+                    {% else %}
+                        Votação encerrada
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="row g-2">
+                {% for chapa in chapas %}
+                <div class="col-xl-3 col-lg-4 col-md-6 col-12 mb-3">
+                    <div class="card h-100">
+                        {% if chapa.imagem %}
+                            <img src="{{ chapa.imagem.url }}" alt="Foto da Chapa {{ chapa.nome }}" class="card-img-top">
+                        {% else %}
+                            <img src="{% static 'img/default-chapa.png' %}" alt="Imagem padrão" class="card-img-top">
+                        {% endif %}
+                        <div class="card-body d-flex flex-column">
+                            <div class="d-flex justify-content-center mb-2">
+                                <span class="badge bg-secondary rounded-pill py-1 px-3">{{ chapa.numero }}</span>
+                            </div>
+                            <h5 class="card-title">{{ chapa.nome }}</h5>
+                            <div class="card-text mb-2">
+                                <p><strong>Propostas:</strong> {{ chapa.propostas|truncatechars:150 }}</p>
+                            </div>
+                            <form method="post" action="{% url 'election:confirmar_voto' eleicao.id chapa.id %}" class="mt-auto">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary w-100">Votar</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-warning">
+                        <p>Não há chapas cadastradas para esta eleição. Entre em contato com a coordenação.</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    {% load static %}
+    <script src="{% static 'js/votacao.js' %}"></script>
+{% endblock %}

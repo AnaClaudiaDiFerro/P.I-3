@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Voto - {{ eleicao.titulo }}{% endblock %}
+
+{% block extra_css %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/confirmar_voto.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="confirmation-card">
+        <div class="card-header">
+            Confirme seu voto para {{ eleicao.titulo }}
+        </div>
+        <div class="card-body">
+            <div class="election-info">
+                <h3>Informações da Eleição</h3>
+                <p><strong>Eleição:</strong> {{ eleicao.titulo }}</p>
+                <p><strong>Período:</strong> {{ eleicao.data_inicio|date:"d/m/Y H:i" }} até {{ eleicao.data_fim|date:"d/m/Y H:i" }}</p>
+                <p><strong>Eleitor:</strong> {{ user.get_full_name|default:user.username }}</p>
+            </div>
+            
+            <div class="chapa-details">
+                {% if chapa.imagem %}
+                    <img src="{{ chapa.imagem.url }}" alt="Foto da Chapa {{ chapa.nome }}" class="chapa-image">
+                {% else %}
+                    <img src="{% static 'img/default-chapa.png' %}" alt="Imagem padrão" class="chapa-image">
+                {% endif %}
+                <div class="chapa-info">
+                    <div class="chapa-number">{{ chapa.numero }}</div>
+                    <h3 class="chapa-name">{{ chapa.nome }}</h3>
+                    <p><strong>Slogan:</strong> {{ chapa.slogan }}</p>
+                    <p><strong>Presidente:</strong> {{ chapa.presidente_nome }}</p>
+                    {% if chapa.vice_nome %}
+                    <p><strong>Vice-Presidente:</strong> {{ chapa.vice_nome }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="warning-box">
+                <h4>Atenção!</h4>
+                <p>Confirme seu voto com atenção. Após a confirmação:</p>
+                <ul>
+                    <li>Seu voto não poderá ser alterado</li>
+                    <li>Você não poderá votar novamente nesta eleição</li>
+                    <li>O voto é sigiloso e não poderá ser identificado individualmente</li>
+                </ul>
+            </div>
+            
+            <form method="post" action="">
+                {% csrf_token %}
+                
+                {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {{ form.non_field_errors }}
+                </div>
+                {% endif %}
+                
+                <div class="form-group form-check">
+                    <input type="checkbox" name="confirmar_voto" id="id_confirmar_voto" class="form-check-input" required />
+                    <label for="id_confirmar_voto" class="form-check-label">
+                        Declaro que estou ciente que este é meu voto final e que não poderei alterá-lo.
+                    </label>
+                    {% if form.confirmar_voto.errors %}
+                    <div class="invalid-feedback d-block">
+                        {{ form.confirmar_voto.errors }}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="action-buttons">
+                    <a href="{% url 'election:votacao_eleicao' eleicao.id %}" class="cancel-button">Cancelar</a>
+                    <button type="submit" class="confirm-button">Confirmar meu voto</button>
+                </div>
+
+                <!-- Campo oculto para garantir que o formulário seja enviado corretamente -->
+                <input type="hidden" name="confirmar" value="true" />
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

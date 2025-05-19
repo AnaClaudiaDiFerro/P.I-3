@@ -1,0 +1,1 @@
+SELECT * FROM sistema_eleicao.accounts_customuser;
