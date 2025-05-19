@@ -1,4 +1,4 @@
-pillow
+Pillow
 Django==4.2
 mysqlclient
 pytest
