@@ -21,7 +21,7 @@ for i in range(200):
     nome_completo = f"{nome} {sobrenome}"
     email = f"{nome.lower()}.{sobrenome.lower()}{i}@gmail.com"
     chapa = random.choices(["Escola Avante", "Mudança Já"], weights=[0.4, 0.6])[0]
-    idade = random.randint(15, 25)
+    idade = random.randint(15, 17)
     serie = random.choice(series)
 
     dados.append({
