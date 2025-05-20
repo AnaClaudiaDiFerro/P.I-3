@@ -72,3 +72,5 @@ jobs:
       - name: Analisar dados da votação simulada
         run: python analise_votacao.py
 
+      - name: Executar análise e gerar gráficos
+        run: python gerar_analise_graficos.py
