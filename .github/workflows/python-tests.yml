@@ -76,7 +76,7 @@ jobs:
         run: python gerar_analise_graficos.py
 
       - name: Upload dos gráficos gerados
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: graficos-votacao
           path: data/*.png
