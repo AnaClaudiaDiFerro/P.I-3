@@ -69,3 +69,6 @@ jobs:
       - name: Gerar CSV com votação simulada
         run: python gerar_csv_votacao.py
 
+      - name: Analisar dados da votação simulada
+        run: python analise_votacao.py
+
