@@ -2,6 +2,8 @@ import pandas as pd
 import random
 import os
 
+print("Diretório atual:", os.getcwd())
+
 # Garante que a pasta 'data/' exista
 os.makedirs("data", exist_ok=True)
 
@@ -27,5 +29,9 @@ for i in range(200):
     })
 
 df = pd.DataFrame(dados)
+os.makedirs("data", exist_ok=True)
 caminho_csv = "data/votacao_simulada.csv"
 df.to_csv(caminho_csv, index=False)
+
+
+print(f"Arquivo salvo em: {os.path.abspath(caminho_csv)}")
