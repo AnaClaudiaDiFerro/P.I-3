@@ -1,28 +1,31 @@
 import pandas as pd
 import random
+import os
 
-# Geração dos dados simulados
-nomes_masculinos = ['Lucas', 'Pedro', 'João', 'Carlos', 'Mateus', 'Gabriel', 'Felipe', 'André', 'Rafael', 'Bruno']
-nomes_femininos = ['Ana', 'Maria', 'Julia', 'Larissa', 'Beatriz', 'Camila', 'Fernanda', 'Patricia', 'Rafaela', 'Juliana']
+# Garante que a pasta 'data/' exista
+os.makedirs("data", exist_ok=True)
 
-sexos = ['Masculino', 'Feminino']
-chapas = ['Escola Avante', 'Mudança Já']
+nomes_femininos = ["Ana", "Beatriz", "Camila", "Daniela", "Eduarda", "Fernanda"]
+nomes_masculinos = ["Carlos", "Eduardo", "Fernando", "Gabriel", "Henrique", "Igor"]
+sobrenomes = ["Silva", "Santos", "Oliveira", "Pereira", "Almeida", "Costa"]
 
 dados = []
 
-for i in range(1, 201):
-    sexo = random.choice(sexos)
-    if sexo == 'Masculino':
-        nome = random.choice(nomes_masculinos)
-    else:
-        nome = random.choice(nomes_femininos)
-    sobrenome = f"Aluno{i}"
+for i in range(200):
+    sexo = random.choice(["Feminino", "Masculino"])
+    nome = random.choice(nomes_femininos if sexo == "Feminino" else nomes_masculinos)
+    sobrenome = random.choice(sobrenomes)
     nome_completo = f"{nome} {sobrenome}"
-    email = f"{nome.lower()}.{sobrenome.lower()}@gmail.com"
-    chapa = random.choices(chapas, weights=[0.55, 0.45])[0]  # Leve vantagem para Escola Avante
-    dados.append([nome_completo, email, sexo, chapa])
+    email = f"{nome.lower()}.{sobrenome.lower()}{i}@gmail.com"
+    chapa = random.choices(["Escola Avante", "Mudança Já"], weights=[0.4, 0.6])[0]
 
-df = pd.DataFrame(dados, columns=["Nome", "Email", "Sexo", "Chapa Votada"])
-caminho_csv = "/mnt/data/votacao_simulada.csv"
+    dados.append({
+        "nome_completo": nome_completo,
+        "email": email,
+        "sexo": sexo,
+        "chapa_votada": chapa
+    })
+
+df = pd.DataFrame(dados)
+caminho_csv = "data/votacao_simulada.csv"
 df.to_csv(caminho_csv, index=False)
-caminho_csv
