@@ -49,28 +49,35 @@ print(df['serie'].value_counts(normalize=False))
 print("\nEstatística descritiva da idade:")
 print(df['idade'].describe())
 
-# Gráficos
+print(df.columns)
 
+
+# Gráfico de distribuição por sexo
 plt.figure(figsize=(6,4))
 sns.countplot(data=df, x='sexo')
 plt.title('Distribuição de Sexo')
 plt.savefig('data/grafico_sexo.png')
 plt.close()
 
+# Gráfico de votos por chapa
 plt.figure(figsize=(6,4))
 sns.countplot(data=df, x='chapa_votada')
 plt.title('Distribuição de Votos por Chapa')
 plt.savefig('data/grafico_chapa.png')
 plt.close()
 
+# Gráfico de série escolar
 plt.figure(figsize=(6,4))
-sns.countplot(data=df, x='serie', order=series)
+sns.countplot(data=df, x='serie', order=sorted(df['serie'].unique()))
 plt.title('Distribuição por Série Escolar')
 plt.savefig('data/grafico_serie.png')
 plt.close()
 
+# Gráfico de distribuição etária
 plt.figure(figsize=(6,4))
-sns.histplot(df['idade'], bins=11, kde=True)
+sns.histplot(df['idade'], bins=10, kde=True)
 plt.title('Distribuição de Idade')
+plt.xlabel('Idade')
+plt.ylabel('Frequência')
 plt.savefig('data/grafico_idade.png')
 plt.close()
