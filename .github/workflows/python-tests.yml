@@ -65,3 +65,7 @@ jobs:
         run: |
           export DJANGO_SETTINGS_MODULE=sistema_eleicao.settings
           pytest
+          
+      - name: Gerar CSV com votação simulada
+        run: python gerar_csv_votacao.py
+
